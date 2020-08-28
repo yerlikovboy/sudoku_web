@@ -32,6 +32,9 @@ body {
   background-color: yellow;
 }
 
+.cell.clue { 
+  background-color: rgb(223, 219, 219);
+}
 /*
 .App {
   text-align: center;
