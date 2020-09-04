@@ -51,46 +51,89 @@ function Cell(props) {
       className={classes.join(' ')}
       onClick={props.clicker}
     >
-      {props.value === -1 ? '' : props.value}
+      {props.value === 0 ? '' : props.value}
     </div>
   )
 }
 
 class Board extends React.Component {
   constructor(props) {
+    console.log('start Board constructor')
     super(props);
 
     // key capture on "document"
     var d = document.getRootNode();
     d.onkeydown = (e) => this.updateValue(e, this);
 
-    const myCells = Array.from(Array(80), (_, i) => new CellDef(i, -1, false));
-    myCells.push(new CellDef(80, 9, true));
     this.state = {
-      // cells: Array.from(Array(81), (_, i) => new CellDef(i)),
-      cells: myCells,
+      cells: Array.from(Array(81), (_, i) => new CellDef(i, 0, false)),
       selected: 0,
     }
   }
 
-  updateSelectedCell(cells, curr_selected, next_selected) {
-    const retval = new Object();
-    if (cells[next_selected].isClue) {
-      retval.isOk = false;
-    } else {
-      cells[curr_selected].isSelected = false;
-      cells[next_selected].isSelected = true;
-      retval.isOK = true;
-      retval.updated_cells = cells;
+  initBoard(p) {
+    const c = this.state.cells.slice();
+    for (let i = 0; i < 81; i++) {
+      // TODO: clean this up 
+      const curVal = p.grid[i];
+      const isClue = curVal !== 0;
+
+      console.debug("idx: " + i + ", value: " + curVal);
+
+      c[i].value = curVal;
+      c[i].isClue = isClue;
+      if (isClue && c[i].isSelected) {
+        c[i].isSelected = false;
+        c[i + 1].isSelected = true;
+      }
+
     }
-    return retval;
+    this.setState({
+      cells: c,
+    })
   }
 
+  componentDidMount() {
+    console.log("start componentDidMount");
+
+    //FIXME: Obtaining puzzle has to be refactored.
+    fetch("http://localhost:5984/puzzles/08fe4f94e72a51cefad5a6db9d940f8c",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Basic " + btoa('admin:Bardop0nd')
+        }
+      })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log("retrieved puzzle: " + result._id + ", difficulty: " + result.n_clues);
+          //TODO: the initBoard method doesn't belong here. But one nice thing about doing this here is 
+          // that the initial board is only used once and is discarded after this (i think ... need to confirm)
+          this.initBoard(result);
+          this.setState({
+            isLoaded: true,
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
+
+    console.log("finish componentDidMount");
+  }
   // charCodes:
   // 37 Left Arroy
   // 38 Up Arrow
   // 39 Right Arrow
   // 40 Down Arrow 
+  // TODO: clean up
   updateValue(e, o) {
     const selected_idx = o.state.selected;
 
@@ -99,8 +142,8 @@ class Board extends React.Component {
     }
 
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-    // TODO: remove
-    //alert(charCode);
+    console.debug("charCode: " + charCode);
+
     if ((charCode >= 49 && charCode <= 57) || charCode === 8) {
       console.error('pressed key: ' + e.key);
       const c = o.state.cells.slice();
@@ -115,7 +158,7 @@ class Board extends React.Component {
       } else {
         // select left
         const c = o.state.cells.slice();
-        
+
         if (c[selected_idx - 1].isClue) {
           console.log("cell " + c[selected_idx].idx + " holds a clue");
           return;
@@ -220,25 +263,33 @@ class Board extends React.Component {
   }
 
   render() {
-    return (
-      <div className="board" id="puzzle_board">
-        {this.genRow(0, 9)}
-        {this.genRow(9, 18)}
-        {this.genRow(18, 27)}
+    const { error, isLoaded } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <div className="board" id="puzzle_board">
+          {this.genRow(0, 9)}
+          {this.genRow(9, 18)}
+          {this.genRow(18, 27)}
 
-        {this.genRow(27, 36)}
-        {this.genRow(36, 45)}
-        {this.genRow(45, 54)}
+          {this.genRow(27, 36)}
+          {this.genRow(36, 45)}
+          {this.genRow(45, 54)}
 
-        {this.genRow(54, 63)}
-        {this.genRow(63, 72)}
-        {this.genRow(72, 81)}
-      </div>
-    );
+          {this.genRow(54, 63)}
+          {this.genRow(63, 72)}
+          {this.genRow(72, 81)}
+        </div>
+      );
+    }
   }
 
 }
 class App extends React.Component {
+  //TODO: maybe retrieve the puzzle in here and then pass it to Board at initialization.
   render() {
     return (
       <div className="game">
