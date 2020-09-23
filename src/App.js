@@ -5,6 +5,9 @@ const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
 const UP_ARROW_KEY = 38;
 const DOWN_ARROW_KEY = 40;
+const BACKSPAACE_KEY = 8;
+const DELETE_KEY = 46;
+
 
 class CellDef {
   idx = -1;
@@ -56,14 +59,15 @@ function Cell(props) {
   )
 }
 
+
 class Board extends React.Component {
   constructor(props) {
-    console.log('start Board constructor')
     super(props);
+    console.debug('start Board constructor')
 
     // key capture on "document"
     var d = document.getRootNode();
-    d.onkeydown = (e) => this.updateValue(e, this);
+    d.onkeydown = e => this.handleKeyDown(e, this);
 
     this.state = {
       cells: Array.from(Array(81), (_, i) => new CellDef(i, 0, false)),
@@ -94,10 +98,10 @@ class Board extends React.Component {
   }
 
   componentDidMount() {
-    console.log("start componentDidMount");
+    console.debug("start componentDidMount");
 
     //FIXME: Obtaining puzzle has to be refactored.
-    fetch("http://localhost:5984/puzzles/08fe4f94e72a51cefad5a6db9d940f8c",
+    fetch("http://localhost:5984/puzzles/390f8b274853752448990987348d42a8",
       {
         headers: {
           "Content-Type": "application/json",
@@ -126,101 +130,58 @@ class Board extends React.Component {
         }
       );
 
-    console.log("finish componentDidMount");
+    console.debug("finish componentDidMount");
   }
-  // charCodes:
-  // 37 Left Arroy
-  // 38 Up Arrow
-  // 39 Right Arrow
-  // 40 Down Arrow 
-  // TODO: clean up
-  updateValue(e, o) {
-    const selected_idx = o.state.selected;
 
-    if (selected_idx <= 0) {
-      console.log('invalid selected idx: ' + selected_idx)
+  nextIndex(cond, incr) {
+    const grid = this.state.cells.slice();
+    const curr_idx = this.state.selected;
+
+    let i = incr(curr_idx)
+    while (cond(i)) {
+      if (!grid[i].isClue) {
+
+        console.log("index of new selected: " + i + ", previous: " + curr_idx)
+        grid[curr_idx].unselect();
+        grid[i].select();
+
+        this.setState({
+          cells: grid,
+          selected: i,
+        });
+        break;
+      }
+      i = incr(i)
     }
+    console.debug("unable to find next available cell");
+  }
+
+  handleKeyDown(e, o) {
 
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
     console.debug("charCode: " + charCode);
 
-    if ((charCode >= 49 && charCode <= 57) || charCode === 8) {
-      console.error('pressed key: ' + e.key);
+    // update cell value
+    if ((charCode >= 49 && charCode <= 57) || charCode === BACKSPAACE_KEY || charCode === DELETE_KEY) {
+      console.debug('update cell value with ' + e.key);
       const c = o.state.cells.slice();
-      c[o.state.selected].value = charCode === 8 ? null : e.key;
+      c[o.state.selected].value = (charCode === BACKSPAACE_KEY || charCode === DELETE_KEY) ? null : e.key;
       o.setState({
         cells: c,
       })
     } else if (charCode === LEFT_KEY) {
-      // move to the left cell
-      if (selected_idx === 0) {
-        console.log("ignore");
-      } else {
-        // select left
-        const c = o.state.cells.slice();
-
-        if (c[selected_idx - 1].isClue) {
-          console.log("cell " + c[selected_idx].idx + " holds a clue");
-          return;
-        }
-        c[selected_idx].isSelected = false;
-        c[selected_idx - 1].isSelected = true;
-        o.setState({
-          cells: c,
-          selected: selected_idx - 1,
-        });
-
-      }
+      this.nextIndex(x => x >= 0, x => x - 1);
     } else if (charCode === RIGHT_KEY) {
       // move to the right cell 
-      if (selected_idx === 80) {
-        console.log("last cell selected and right move request ignored");
-      } else {
-        // select right
-        const c = o.state.cells.slice();
-        if (c[selected_idx + 1].isClue) {
-          console.log("cell " + c[selected_idx + 1].idx + " holds a clue");
-          return;
-        }
-        c[selected_idx].isSelected = false;
-        c[selected_idx + 1].isSelected = true;
-        o.setState({
-          cells: c,
-          selected: selected_idx + 1,
-        });
-      }
+      this.nextIndex(x => x < 81, x => x + 1);
     } else if (charCode === DOWN_ARROW_KEY) {
       // move down
-      if (selected_idx < 72) {
-        const c = o.state.cells.slice();
-
-        if (c[selected_idx + 9].isClue) {
-          console.log("cell " + c[selected_idx + 9].idx + " holds a clue");
-          return;
-        }
-
-        c[selected_idx].isSelected = false;
-        c[selected_idx + 9].isSelected = true;
-        o.setState({
-          cells: c,
-          selected: selected_idx + 9,
-        });
-      }
-
+      this.nextIndex(x => x <= 80, x => x + 9)
     } else if (charCode === UP_ARROW_KEY) {
       // move up 
-      if (selected_idx > 8) {
-        const c = o.state.cells.slice();
-        c[selected_idx].isSelected = false;
-        c[selected_idx - 9].isSelected = true;
-        o.setState({
-          cells: c,
-          selected: selected_idx - 9,
-        });
-      }
+      this.nextIndex(x => x >= 0, x => x - 9)
     } else {
-      alert('key pressed: ' + e.keyCode);
-      console.log('invalid input: ' + e.keyCode);
+      console.log('key pressed ' + e.keyCode);
     }
   }
 
@@ -228,7 +189,7 @@ class Board extends React.Component {
     const c = this.state.cells[i];
     return <Cell
       selected={c.isSelected}
-      idx={c.idx}
+      key={c.idx}
       value={c.value}
       isClue={c.isClue}
       clicker={() => this.updateSelected(i)}
@@ -242,6 +203,7 @@ class Board extends React.Component {
 
         curr_cells[idx].select();
         if (this.state.selected !== -1) {
+          console.log("me: " + curr_cells[idx]);
           curr_cells[this.state.selected].unselect();
         }
         this.setState({
