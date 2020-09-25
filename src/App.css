@@ -1,39 +1,83 @@
 body {
+  box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  margin: 20px;
+}
+
+
+#root { 
+  margin-top: 50px;
+  margin-left: 50px;
 }
 
 .board { 
-  margin: 20px;
-}
-
-.board-row::after { 
-  display: table;
-  content: ""; 
-  clear: both;
-}
-
-.cell {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-.cell.selected {
-  background-color: yellow;
+  margin-left: 50px;
+  margin-top: 50px;
 }
 
 .cell.clue { 
   background-color: rgb(223, 219, 219);
+}
+
+.cell.conflict { 
+  background-color: rgb(252, 61, 61)
+}
+.cell.selected.conflict { 
+  background-color: rgb(199, 155, 130);
+}
+
+
+
+ /* .board { 
+  margin-top: 35px;
+  margin-left: 1em;
+  margin-right: 1em;
+} 
+*/
+
+.board-row::after { 
+  display: table;
+  clear: left;
+  content:"";
+}
+
+.cell {
+
+  background: #fff;
+  border: 3px solid #999;
+
+
+  float: left;
+  font-size: 34px;
+  font-weight: bold;
+  line-height: 44px;
+  height: 44px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0px;
+  text-align: center;
+  width: 44px;
+}
+
+
+@media (min-width: 992px) {
+  .cell.selected {
+    background-color: rgb(138, 241, 152);
+  }
+  .cell {
+
+    background: #fff;
+    border: 3px solid #999;
+    float: left;
+    font-size: 400%;
+    font-weight: bold;
+    line-height: 90px;
+    height: 90px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0px;
+    text-align: center;
+    width: 90px;
+  }
 }
 /*
 .App {
