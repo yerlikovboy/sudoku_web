@@ -1,6 +1,6 @@
-import React from 'react';
-import './App.css';
-import Board from './Board.js'
+import React from "react";
+import "./Board.css";
+import Board from "./Board.js";
 
 class App extends React.Component {
   render() {
@@ -9,7 +9,7 @@ class App extends React.Component {
         <div className="title">9x9 Sudoku Board</div>
         <Board />
       </div>
-    )
+    );
   }
 }
 

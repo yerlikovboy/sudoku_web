@@ -1,0 +1,126 @@
+body {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: teal; /* dev only... see whats going on */
+}
+
+#root {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.cell.clue {
+  background-color: rgb(223, 219, 219);
+}
+
+.cell.conflict {
+  background-color: rgb(252, 61, 61);
+}
+.cell.selected.conflict {
+  background-color: rgb(199, 155, 130);
+}
+.cell.selected {
+  background-color: yellow;
+}
+
+.board {
+  float: left;
+  display: table;
+  margin-left: 100px;
+  min-width: 550px;
+  max-width: 700px;
+}
+
+.block {
+  float: left;
+  width: 171px;
+  border: 4px solid black;
+  border-bottom: 2px solid black;
+  margin-left: -5px;
+}
+
+.block-2 {
+  float: inherit;
+}
+
+#block-3,
+#block-4,
+#block-5 {
+  border-top: 2px solid black;
+}
+
+.block.bottom {
+  border-top: 2px solid black;
+  border-bottom: 4px solid black;
+}
+.block.row {
+  float: left;
+  background-color: green;
+}
+
+.pos {
+  float: left;
+  border-bottom: 2px solid #999;
+  border-right: 2px solid #999;
+}
+
+.pos.row-end {
+  border-right: unset;
+  padding-right: 2px;
+}
+
+.cell {
+  height: 45px;
+  width: 45px;
+
+  background: #fff;
+
+  float: left;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 44px;
+
+  padding: 5px;
+  text-align: center;
+}
+/* 
+@media (min-width: 992px) {
+  .cell.selected {
+    background-color: rgb(138, 241, 152);
+  }
+  .cell {
+    background: #fff;
+    border: 3px solid #999;
+    float: left;
+    font-size: 400%;
+    font-weight: bold;
+    line-height: 90px;
+    height: 90px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0px;
+    text-align: center;
+    width: 90px;
+  }
+} */
+/*
+  .App {
+    text-align: center;
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  */
