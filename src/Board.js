@@ -62,10 +62,9 @@ class Board extends React.Component {
     console.debug("start componentDidMount");
 
     //FIXME: Obtaining puzzle has to be refactored.
-    fetch("http://localhost:5984/puzzles/390f8b274853752448990987348d42a8", {
+    fetch("http://homelander/potd", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Basic " + btoa("admin:Bardop0nd"),
       },
     })
       .then((res) => res.json())
