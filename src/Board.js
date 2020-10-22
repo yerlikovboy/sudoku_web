@@ -18,8 +18,30 @@ class Board extends React.Component {
     let d = document.getRootNode();
     d.onkeydown = (e) => this.handleKeyDown(e, this);
 
+    const c = Array.from(Array(81), (_, i) => new CellDef(i, 0, false));
+
+    if (typeof props.puzzle !== 'undefined') { 
+      console.log(`puzzle id: ${props.puzzle._id}`);
+      const p = props.puzzle; 
+      for (let i = 0; i < 81; i++) {
+        // TODO: clean this up
+        const curVal = p.grid[i];
+        const isClue = curVal !== 0;
+  
+        //console.debug("idx: " + i + ", value: " + curVal);
+  
+        c[i].value = curVal;
+        c[i].isClue = isClue;
+        if (isClue && c[i].isSelected) {
+          c[i].isSelected = false;
+          c[i + 1].isSelected = true;
+        }
+      }
+
+    }
+
     this.state = {
-      cells: Array.from(Array(81), (_, i) => new CellDef(i, 0, false)),
+      cells: c,
       selected: 0,
       blocks: [
         [0, 1, 2, 9, 10, 11, 18, 19, 20],
@@ -35,66 +57,8 @@ class Board extends React.Component {
         [60, 61, 62, 69, 70, 71, 78, 79, 80],
       ],
     };
-  }
+    console.debug("end Board constructor");
 
-  loadPuzzle(p) {
-    const c = this.state.cells.slice();
-    for (let i = 0; i < 81; i++) {
-      // TODO: clean this up
-      const curVal = p.grid[i];
-      const isClue = curVal !== 0;
-
-      console.debug("idx: " + i + ", value: " + curVal);
-
-      c[i].value = curVal;
-      c[i].isClue = isClue;
-      if (isClue && c[i].isSelected) {
-        c[i].isSelected = false;
-        c[i + 1].isSelected = true;
-      }
-    }
-    this.setState({
-      cells: c,
-    });
-  }
-
-  componentDidMount() {
-    console.debug("start componentDidMount");
-
-    //FIXME: Obtaining puzzle has to be refactored.
-    fetch("http://homelander/potd", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(
-            "retrieved puzzle: " +
-              result._id +
-              ", difficulty: " +
-              result.n_clues
-          );
-          //TODO: the initBoard method doesn't belong here. But one nice thing about doing this here is
-          // that the initial board is only used once and is discarded after this (i think ... need to confirm)
-          this.loadPuzzle(result);
-          this.setState({
-            isLoaded: true,
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
-
-    console.debug("finish componentDidMount");
   }
 
   // traverse the array of cells using the confitional and increment functions
@@ -284,12 +248,6 @@ class Board extends React.Component {
   }
 
   render() {
-    const { error, isLoaded } = this.state;
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else {
       const puzzleSolved = this.state.cells.every(
         (x) => x.value !== 0 && x.conflicts === 0
       );
@@ -303,20 +261,6 @@ class Board extends React.Component {
       return (
         <div>
           <div className="status">{status}</div>
-
-          {/* <div className="board" id="puzzle_board">
-            {this.genRow(0, 9)}
-            {this.genRow(9, 18)}
-            {this.genRow(18, 27)}
-
-            {this.genRow(27, 36)}
-            {this.genRow(36, 45)}
-            {this.genRow(45, 54)}
-
-            {this.genRow(54, 63)}
-            {this.genRow(63, 72)}
-            {this.genRow(72, 81)}
-          </div> */}
 
           <div className="board">
             <div className="block-3" id="top">
@@ -339,7 +283,7 @@ class Board extends React.Component {
         </div>
       );
     }
-  }
+  //}
 }
 
 export default Board;
