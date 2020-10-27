@@ -26,37 +26,24 @@ body {
 
 .board {
   float: left;
-  display: table;
-  margin-left: 100px;
-  min-width: 550px;
-  max-width: 700px;
+  display: grid;
+  border: 4px solid black;
+  border-bottom: unset;
+  
+}
+
+.block-3 {
+  float: left;
+  border-bottom: 4px solid black;
 }
 
 .block {
   float: left;
-  width: 171px;
-  border: 4px solid black;
-  border-bottom: 2px solid black;
-  margin-left: -5px;
+  width: 169px;
 }
 
-.block-2 {
-  float: inherit;
-}
-
-#block-3,
-#block-4,
-#block-5 {
-  border-top: 2px solid black;
-}
-
-.block.bottom {
-  border-top: 2px solid black;
-  border-bottom: 4px solid black;
-}
-.block.row {
+.row {
   float: left;
-  background-color: green;
 }
 
 .pos {
@@ -65,9 +52,25 @@ body {
   border-right: 2px solid #999;
 }
 
+#bottom .pos {
+  border-bottom: 0px;
+}
+
 .pos.row-end {
   border-right: unset;
-  padding-right: 2px;
+  /* padding-right: 2px; */
+}
+
+#block-0,
+#block-3,
+#block-6 {
+  border-right: 4px solid black;
+}
+
+#block-2,
+#block-5,
+#block-8 {
+  border-left: 4px solid black;
 }
 
 .cell {
@@ -84,6 +87,7 @@ body {
   padding: 5px;
   text-align: center;
 }
+
 /* 
 @media (min-width: 992px) {
   .cell.selected {
