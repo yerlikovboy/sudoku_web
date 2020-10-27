@@ -20,16 +20,16 @@ class Board extends React.Component {
 
     const c = Array.from(Array(81), (_, i) => new CellDef(i, 0, false));
 
-    if (typeof props.puzzle !== 'undefined') { 
+    if (typeof props.puzzle !== 'undefined') {
       console.log(`puzzle id: ${props.puzzle._id}`);
-      const p = props.puzzle; 
+      const p = props.puzzle;
       for (let i = 0; i < 81; i++) {
         // TODO: clean this up
         const curVal = p.grid[i];
         const isClue = curVal !== 0;
-  
+
         //console.debug("idx: " + i + ", value: " + curVal);
-  
+
         c[i].value = curVal;
         c[i].isClue = isClue;
         if (isClue && c[i].isSelected) {
@@ -110,10 +110,10 @@ class Board extends React.Component {
       if (new_val !== 0 && peer_val === new_val) {
         console.log(
           "add conflict: idx: " +
-            idx +
-            ", peer: " +
-            grid[peer].value +
-            " is same"
+          idx +
+          ", peer: " +
+          grid[peer].value +
+          " is same"
         );
         grid[peer].add_conflict();
         grid[idx].add_conflict();
@@ -188,7 +188,12 @@ class Board extends React.Component {
     if (typeof add_classes !== "undefined") {
       add_classes.forEach((x) => classes.push(x));
     }
+    const c = i % 3;
+    console.log(i + " mod 3: " + c);
 
+    if (i % 3 === 2) {
+      classes.push("row-end");
+    }
     return <div className={classes.join(" ")}>{this.renderCell(i)}</div>;
   }
 
@@ -217,7 +222,7 @@ class Board extends React.Component {
     return <div className="board-row">{row}</div>;
   }
 
-  generateBlockRow(row_indices, add_classes, is_bottom_row) {
+  generateBlockRow(row_indices, is_bottom_row) {
     if (is_bottom_row) {
       return (
         <div className="row" id="bottom">
@@ -233,56 +238,54 @@ class Board extends React.Component {
   generateBlock(block_num, is_bottom) {
     let block_indexes = this.state.blocks[block_num];
     const classes = ["block"];
-    if (typeof is_bottom !== "undefined" && is_bottom) {
-      classes.push("bottom");
-    }
+
     return (
       <div className={classes.join(" ")} id={"block-" + block_num}>
         {this.generateBlockRow(block_indexes.slice(0, 3))}
 
         {this.generateBlockRow(block_indexes.slice(3, 6))}
 
-        {this.generateBlockRow(block_indexes.slice(6, 9))}
+        {this.generateBlockRow(block_indexes.slice(6, 9), true)}
       </div>
     );
   }
 
   render() {
-      const puzzleSolved = this.state.cells.every(
-        (x) => x.value !== 0 && x.conflicts === 0
-      );
-      let status;
-      if (puzzleSolved) {
-        status = "You solved the puzzle!";
-      } else {
-        status = "Good luck!";
-      }
+    const puzzleSolved = this.state.cells.every(
+      (x) => x.value !== 0 && x.conflicts === 0
+    );
+    let status;
+    if (puzzleSolved) {
+      status = "You solved the puzzle!";
+    } else {
+      status = "Good luck!";
+    }
 
-      return (
-        <div>
-          <div className="status">{status}</div>
+    return (
+      <div>
+        <div className="status">{status}</div>
 
-          <div className="board">
-            <div className="block-3" id="top">
-              {this.generateBlock(0)}
-              {this.generateBlock(1)}
-              {this.generateBlock(2)}
-            </div>
+        <div className="board">
+          <div className="block-3">
+            {this.generateBlock(0)}
+            {this.generateBlock(1)}
+            {this.generateBlock(2)}
+          </div>
 
-            <div className="block-3" id="middle">
-              {this.generateBlock(3)}
-              {this.generateBlock(4)}
-              {this.generateBlock(5)}
-            </div>
-            <div className="block-3" id="bottom">
-              {this.generateBlock(6, true)}
-              {this.generateBlock(7, true)}
-              {this.generateBlock(8, true)}
-            </div>
+          <div className="block-3">
+            {this.generateBlock(3)}
+            {this.generateBlock(4)}
+            {this.generateBlock(5)}
+          </div>
+          <div className="block-3">
+            {this.generateBlock(6, true)}
+            {this.generateBlock(7, true)}
+            {this.generateBlock(8, true)}
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
   //}
 }
 
