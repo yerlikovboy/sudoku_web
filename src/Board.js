@@ -1,5 +1,5 @@
 import React from "react";
-import "./Board.css";
+import "./css/Board.css";
 import { Cell, CellDef } from "./Cell.js";
 
 const LEFT_KEY = 37;
@@ -20,6 +20,7 @@ class Board extends React.Component {
 
     const c = Array.from(Array(81), (_, i) => new CellDef(i, 0, false));
 
+    let selected_idx = 0; 
     if (typeof props.puzzle !== 'undefined') {
       console.log(`puzzle id: ${props.puzzle._id}`);
       const p = props.puzzle;
@@ -34,7 +35,8 @@ class Board extends React.Component {
         c[i].isClue = isClue;
         if (isClue && c[i].isSelected) {
           c[i].isSelected = false;
-          c[i + 1].isSelected = true;
+          selected_idx = selected_idx + 1;
+          c[selected_idx].isSelected = true;
         }
       }
 
@@ -42,7 +44,7 @@ class Board extends React.Component {
 
     this.state = {
       cells: c,
-      selected: 0,
+      selected: selected_idx,
       blocks: [
         [0, 1, 2, 9, 10, 11, 18, 19, 20],
         [3, 4, 5, 12, 13, 14, 21, 22, 23],
@@ -188,8 +190,6 @@ class Board extends React.Component {
     if (typeof add_classes !== "undefined") {
       add_classes.forEach((x) => classes.push(x));
     }
-    const c = i % 3;
-    console.log(i + " mod 3: " + c);
 
     if (i % 3 === 2) {
       classes.push("row-end");

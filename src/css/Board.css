@@ -1,0 +1,184 @@
+body {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: teal; /* dev only... see whats going on */
+}
+
+#root {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.cell.clue {
+  background-color: rgb(223, 219, 219);
+}
+
+.cell.conflict {
+  background-color: rgb(252, 61, 61);
+}
+.cell.selected.conflict {
+  background-color: rgb(199, 155, 130);
+}
+.cell.selected {
+  background-color: yellow;
+}
+
+.board {
+  float: left;
+  display: grid;
+  border-bottom: unset;
+}
+
+.block-3 {
+  float: left;
+  border-bottom: 4px solid black;
+}
+
+.block {
+  float: left;
+}
+
+.row {
+  float: left;
+}
+
+#bottom .pos {
+  border-bottom: unset;
+}
+
+.pos.row-end {
+  border-right: unset;
+}
+
+.cell {
+  float: left;
+  
+  background: #fff;
+  
+  font-weight: bold;
+
+  text-align: center;
+}
+
+.game-controls { 
+  float: left;
+  background-color: tomato;
+}
+
+/* iPhone 12 Pro */
+@media only screen 
+  and (min-device-width : 390px) 
+  and (max-device-width : 844px) 
+  and (-webkit-device-pixel-ratio : 3) {
+
+    #root {
+      margin-top: 50px;
+      margin-left: 16px;
+    }
+
+    .block {
+      width: 115px;
+    }
+    
+    .board { 
+      border: 4px solid black;
+      border-bottom: unset;
+    }
+
+    .pos {
+      float: left;
+      border-bottom: 2px solid #999;
+      border-right: 2px solid #999;
+    }
+
+    #block-0, #block-3, #block-6 {
+      border-right: 2px solid black;
+    }
+
+    #block-2, #block-5, #block-8 {
+      border-left: 2px solid black;
+    }
+    
+    .cell {
+      height: 30px;
+      width: 33px;
+      
+      font-size: 22px;
+      
+      line-height: 32px;
+
+      padding: 2px;
+    }
+
+    .game-controls { 
+      display: none; /* lets hide for now */
+    }
+
+}
+
+/* PC screen */
+@media screen 
+  and (min-device-width: 1200px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+
+    .block {
+      width: 199px;
+    }
+    
+    .board { 
+      border: 5px solid black;
+      border-bottom: unset;
+    }
+
+    .pos {
+      float: left;
+      border-bottom: 2px solid #999;
+      border-right: 2px solid #999;
+    }
+
+    #block-0, #block-3, #block-6 {
+      border-right: 5px solid black;
+    }
+
+    #block-2, #block-5, #block-8 {
+      border-left: 5px solid black;
+    }
+    
+    .cell {
+      height: 55px;
+      width: 55px;
+      
+      font-size: 38px;
+      
+      line-height: 55px;
+
+      padding: 5px;
+    }
+
+
+    .game-controls {
+      float: left;
+      max-width: 199px;
+      margin: 4px;
+  }
+
+  .input-button {
+      float: inherit;
+      background-color: whitesmoke;
+
+      border: 2px solid grey;
+
+      height: 55px;
+      width: 55px;
+
+      margin: 2px;
+
+      font-size: 38px;
+      font-weight: bold;
+      line-height: 55px;
+      text-align: center;
+  }
+}
+
+
