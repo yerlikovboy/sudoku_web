@@ -23,10 +23,6 @@ class GameController extends React.Component {
                 <div className="input-button" id="nine">9</div>
                 <div className="input-button" id="del">clr</div>
 
-
-
-
-
             </div>);
     }
 
