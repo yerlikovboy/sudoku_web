@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./css/index.css";
-// import App from "./App";
 import Game from "./Game"
+import "./css/index.css";
 
 console.log("fetching puzzle");
 fetch("http://homelander/potd", {

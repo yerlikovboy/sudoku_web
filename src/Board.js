@@ -74,37 +74,24 @@ class Board extends React.Component {
   }
 
   render() {
-    const puzzleSolved = this.props.cells.every(
-      (x) => x.value !== 0 && x.conflicts === 0
-    );
-    let status;
-    if (puzzleSolved) {
-      status = "You solved the puzzle!";
-    } else {
-      status = "Good luck!";
-    }
 
     return (
-      <div>
-        <div className="status">{status}</div>
+      <div className="board">
+        <div className="block-3">
+          {this.generateBlock(0)}
+          {this.generateBlock(1)}
+          {this.generateBlock(2)}
+        </div>
 
-        <div className="board">
-          <div className="block-3">
-            {this.generateBlock(0)}
-            {this.generateBlock(1)}
-            {this.generateBlock(2)}
-          </div>
-
-          <div className="block-3">
-            {this.generateBlock(3)}
-            {this.generateBlock(4)}
-            {this.generateBlock(5)}
-          </div>
-          <div className="block-3">
-            {this.generateBlock(6, true)}
-            {this.generateBlock(7, true)}
-            {this.generateBlock(8, true)}
-          </div>
+        <div className="block-3">
+          {this.generateBlock(3)}
+          {this.generateBlock(4)}
+          {this.generateBlock(5)}
+        </div>
+        <div className="block-3">
+          {this.generateBlock(6, true)}
+          {this.generateBlock(7, true)}
+          {this.generateBlock(8, true)}
         </div>
       </div>
     );
