@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./css/index.css";
-import App from "./App";
+// import App from "./App";
+import Game from "./Game"
 
 console.log("fetching puzzle");
 fetch("http://homelander/potd", {
@@ -17,7 +18,7 @@ fetch("http://homelander/potd", {
       );
 
       ReactDOM.render(
-        < App puzzle={result} />,
+        <Game puzzle={result} />,
         document.getElementById("root")
       );
     },
