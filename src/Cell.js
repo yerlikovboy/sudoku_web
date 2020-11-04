@@ -105,7 +105,7 @@ export function Cell(props) {
 
     if (props.isClue) {
         classes.push("clue");
-    } 
+    }
     return (
         <div
             className={classes.join(' ')}
