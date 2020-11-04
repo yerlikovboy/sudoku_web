@@ -10,7 +10,6 @@ class GameController extends React.Component {
 
         return (
             <div className="game-controls">
-
                 <div className="input-button" id="one">1</div>
                 <div className="input-button" id="two">2</div>
                 <div className="input-button" id="three">3</div>
@@ -22,7 +21,6 @@ class GameController extends React.Component {
                 <div className="input-button" id="eight">8</div>
                 <div className="input-button" id="nine">9</div>
                 <div className="input-button" id="del">clr</div>
-
             </div>);
     }
 

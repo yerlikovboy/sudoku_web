@@ -1,6 +1,6 @@
 import React from "react";
 import Board from "./Board"
-import {CellDef} from "./Cell.js";
+import { CellDef } from "./Cell.js";
 
 import "./css/Board.css";
 
@@ -173,16 +173,11 @@ export default class Game extends React.Component {
     render() {
         return (
             <div>
-                <div>
-                    This is game.
-                </div>
-                <div>
-                    <Board
-                        cells={this.state.cells}
-                        selected={this.state.selected_idx}
-                        clickHandler={(i) => this.handleClick(i)}
-                    />
-                </div>
+                <Board
+                    cells={this.state.cells}
+                    selected={this.state.selected_idx}
+                    clickHandler={(i) => this.handleClick(i)}
+                />
             </div>
         );
     }
