@@ -1,11 +1,12 @@
 import React from "react";
 import Board from "./Board"
+import InputConsole from './Controls'
 import { CellDef } from "./Cell.js";
 
 import "./css/Board.css";
 
-const LEFT_KEY = 37;
-const RIGHT_KEY = 39;
+const LEFT_ARROW_KEY = 37;
+const RIGHT_ARROW_KEY = 39;
 const UP_ARROW_KEY = 38;
 const DOWN_ARROW_KEY = 40;
 const BACKSPACE_KEY = 8;
@@ -64,12 +65,12 @@ export default class Game extends React.Component {
                     charCode === BACKSPACE_KEY || charCode === DELETE_KEY ? 0 : e.key
                 )
             );
-        } else if (charCode === LEFT_KEY) {
+        } else if (charCode === LEFT_ARROW_KEY) {
             this.selectNextCell(
                 (x) => x >= 0,
                 (x) => x - 1
             );
-        } else if (charCode === RIGHT_KEY) {
+        } else if (charCode === RIGHT_ARROW_KEY) {
             // move to the right cell
             this.selectNextCell(
                 (x) => x < 81,
@@ -172,11 +173,14 @@ export default class Game extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="game">
                 <Board
                     cells={this.state.cells}
                     selected={this.state.selected_idx}
                     clickHandler={(i) => this.handleClick(i)}
+                />
+                <InputConsole
+                    clickHandler={(i) => this.updateCellValue(i)}
                 />
             </div>
         );
