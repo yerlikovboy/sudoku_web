@@ -62,9 +62,8 @@ body {
   text-align: center;
 }
 
-.game-controls { 
+.controls { 
   float: left;
-  background-color: tomato;
 }
 
 /* iPhone 12 Pro */
@@ -74,7 +73,7 @@ body {
   and (-webkit-device-pixel-ratio : 3) {
 
     #root {
-      margin-top: 50px;
+      margin-top: 25px;
       margin-left: 16px;
     }
 
@@ -112,11 +111,44 @@ body {
       padding: 2px;
     }
 
-    .game-controls { 
-      display: none; /* lets hide for now */
+    .controls { 
+      border: 4px solid black;
+      width: 168px; /* 50 + 2*2 + (1+1) */
+
     }
+    .input-button {
+      float: left;
+      background-color: whitesmoke;
+
+      border: 2px solid grey;
+      border-radius: 2px;
+
+      height: 50px;
+      width: 50px;
+
+      margin: 1px;
+
+      font-size: 36px;
+      font-weight: bold;
+      line-height: 40px;
+      text-align: center;
+  }
 
 }
+
+/* iPhone 12 Pro Landscape Mode */
+@media only screen 
+  and (min-device-width : 390px) 
+  and (max-device-width : 844px) 
+  and (-webkit-device-pixel-ratio : 3) 
+  and (orientation: landscape) {
+    .controls { 
+      border: 4px solid red;
+      width: 280px; /* each button is 56px (50 + 2*2 + (1+1)) and there are 4 buttons per row */
+      margin-left: 60px;
+      margin-top: 90px;
+    }
+  }
 
 /* PC screen */
 @media screen 
@@ -158,7 +190,8 @@ body {
     }
 
 
-    .game-controls {
+    .controls {
+      display: none;
       float: left;
       max-width: 199px;
       margin: 4px;
@@ -169,6 +202,7 @@ body {
       background-color: whitesmoke;
 
       border: 2px solid grey;
+      border-radius: 2px;
 
       height: 55px;
       width: 55px;

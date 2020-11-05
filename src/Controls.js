@@ -1,29 +1,25 @@
 import React from "react";
 
-class GameController extends React.Component {
-    constructor(props) {
-        super();
-        console.debug("GameController contructor")
-    }
+function renderButton(i, clickHandler) {
+    return (
+        <div className="input-button" onClick={() => clickHandler(i)}>{i}</div>
+    )
+}
+function InputConsole(props) {
 
-    render() {
-
-        return (
-            <div className="game-controls">
-                <div className="input-button" id="one">1</div>
-                <div className="input-button" id="two">2</div>
-                <div className="input-button" id="three">3</div>
-
-                <div className="input-button" id="four">4</div>
-                <div className="input-button" id="five">5</div>
-                <div className="input-button" id="six">6</div>
-                <div className="input-button" id="seven">7</div>
-                <div className="input-button" id="eight">8</div>
-                <div className="input-button" id="nine">9</div>
-                <div className="input-button" id="del">clr</div>
-            </div>);
-    }
-
+    return (
+        <div className="controls">
+            {renderButton(1, props.clickHandler)}
+            {renderButton(2, props.clickHandler)}
+            {renderButton(3, props.clickHandler)}
+            {renderButton(4, props.clickHandler)}
+            {renderButton(5, props.clickHandler)}
+            {renderButton(6, props.clickHandler)}
+            {renderButton(7, props.clickHandler)}
+            {renderButton(8, props.clickHandler)}
+            {renderButton(9, props.clickHandler)}
+            {renderButton(0, props.clickHandler)}
+        </div>);
 }
 
-export default GameController;
+export default InputConsole;
